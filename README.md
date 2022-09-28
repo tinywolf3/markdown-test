@@ -151,7 +151,6 @@ const info = {
 ## VestingStatus
 Status of a vesting.
 
-ref: [VestingToken](#vestingtoken)
 ```jsonc
 {
   "schedule":      string,        // 베스팅 스케쥴 종류
@@ -169,6 +168,7 @@ ref: [VestingToken](#vestingtoken)
   "sum_claimed":   amount,        // 이 스테이지에서 현재까지 클레임된 물량
 }
 ```
+ref: [VestingToken](#vestingtoken)
 
 ```javascript
 const status = {
@@ -189,7 +189,6 @@ const status = {
 ## VestingAmounts
 Amounts of a vesting.
 
-ref: [VestingToken](#vestingtoken)
 ```jsonc
 {
   "token":     VestingToken,  // 토큰 종류
@@ -199,6 +198,7 @@ ref: [VestingToken](#vestingtoken)
   "claimable": amount,        // 클레임 가능한 물량
 }
 ```
+ref: [VestingToken](#vestingtoken)
 
 ```javascript
 const status = {
