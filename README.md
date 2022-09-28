@@ -1,3 +1,6 @@
+![JSON](https://img.shields.io/badge/-JSON-666666?logo=json&logoColor=ffffff)
+![JavaScript](https://img.shields.io/badge/-JavaScript-666666?logo=javascript&logoColor=f7df1e)
+
 # XPLA Vesting
 This contract is to provide vesting account features for the both cw20 and native tokens.
 
@@ -11,7 +14,6 @@ There are 2 types of the pagination
 - "offset"
 - "stage"
 
-![JSON](https://img.shields.io/badge/-JSON-666666?logo=json&logoColor=ffffff)
 ```jsonc
 {
   "offset": {
@@ -20,7 +22,6 @@ There are 2 types of the pagination
   }
 }
 ```
-**JSON**
 ```jsonc
 {
   "stage": {
@@ -29,7 +30,7 @@ There are 2 types of the pagination
   }
 }
 ```
-![JavaScript](https://img.shields.io/badge/-JavaScript-666666?logo=javascript&logoColor=f7df1e)
+
 ```javascript
 const pagination = {
   offset: {
@@ -38,7 +39,6 @@ const pagination = {
   },
 };
 ```
-**JavaScript**
 ```javascript
 const pagination = {
   stage: {
@@ -59,6 +59,7 @@ Amounts for an account.
                             //   (반드시 each_amount와 total_amount 둘 중 하나만 설정)
 }
 ```
+
 ```javascript
 const accounts = [
   {
@@ -81,6 +82,7 @@ Stage of an account.
   "stage":   number,   // 해당 수익자가 등록된 스테이지 번호
 }
 ```
+
 ```javascript
 const accounts = [
   {
@@ -137,6 +139,7 @@ Infomations of a vesting.
   "webpage":     uri,     //<- Optional, 베스팅 설명 페이지
 }
 ```
+
 ```javascript
 const info = {
   name: 'Vesting',
@@ -148,6 +151,7 @@ const info = {
 ## VestingStatus
 Status of a vesting.
 
+ref: [VestingToken](#vestingtoken)
 ```jsonc
 {
   "schedule":      string,        // 베스팅 스케쥴 종류
@@ -165,7 +169,7 @@ Status of a vesting.
   "sum_claimed":   amount,        // 이 스테이지에서 현재까지 클레임된 물량
 }
 ```
-ref: [VestingToken](#vestingtoken)
+
 ```javascript
 const status = {
   schedule: 'periodic',
@@ -185,6 +189,7 @@ const status = {
 ## VestingAmounts
 Amounts of a vesting.
 
+ref: [VestingToken](#vestingtoken)
 ```jsonc
 {
   "token":     VestingToken,  // 토큰 종류
@@ -194,7 +199,7 @@ Amounts of a vesting.
   "claimable": amount,        // 클레임 가능한 물량
 }
 ```
-ref: [VestingToken](#vestingtoken)
+
 ```javascript
 const status = {
   schedule: 'periodic',
@@ -223,13 +228,14 @@ There are 4 types of the condition
 ### daily condition
 Vseting occurs at a certain time every day.
 
-```json
+```jsonc
 {
   "daily": {  // 매일 발생
     "hour": [ number, ... ],  // 발생 시간 목록 (0~23)
   }
 }
 ```
+
 ```javascript
 // 매일 1시와 13시에 베스팅 발생 (UTC 기준)
 const condition = {
@@ -242,7 +248,7 @@ const condition = {
 ### weekly condition
 Vesting occurs every week.
 
-```json
+```jsonc
 {
   "weekly": {  // 매주 발생
     "weekday": [ number, ... ],  // 발생 요일 (0:Sun ~ 6:Sat)
@@ -250,6 +256,7 @@ Vesting occurs every week.
   }
 }
 ```
+
 ```javascript
 // 매주 월,수,금요일마다 12시에 베스팅 발생 (UTC 기준)
 const condition = {
@@ -263,7 +270,7 @@ const condition = {
 ### monthly condition
 Vesting occurs every month.
 
-```json
+```jsonc
 {
   "monthly": {  // 매월 발생
     "day":  [ number, ... ],  // 발생 일자 (1 ~ 31)
@@ -271,6 +278,7 @@ Vesting occurs every month.
   }
 }
 ```
+
 ```javascript
 // 매달 1일과 15일의 6,12,18시에 베스팅 발생 (UTC 기준)
 const condition = {
@@ -284,7 +292,7 @@ const condition = {
 ### yearly condition
 Vesting occurs every year.
 
-```json
+```jsonc
 {
   "yearly": {  // 매년 발생
     "month": [ number, ... ],  // 발생 월 (1 ~ 12)
@@ -293,6 +301,7 @@ Vesting occurs every year.
   }
 }
 ```
+
 ```javascript
 // 매년 1,4,7,10월의 20일 0시에 베스팅 발생 (UTC 기준)
 const condition = {
@@ -310,7 +319,7 @@ const condition = {
 ## Init
 Instantiate contract.
 
-```json
+```jsonc
 {
   "owner":           address, // 이 컨트랙트를 관리할 소유자 주소
   "name":            string,  // 이 컨트랙트를 나타내는 이름
@@ -318,7 +327,7 @@ Instantiate contract.
 }
 ```
 
-```json
+```jsonc
 {
   "owner": "xpla1...c9v5",
   "name": "vesting test"
@@ -329,7 +338,7 @@ Instantiate contract.
 Change settings.
 Run as an owner address.
 
-```json
+```jsonc
 {
   "update_config": {
     "name":            string, //<- Optional, 이 컨트랙트를 나타내는 이름
@@ -338,7 +347,7 @@ Run as an owner address.
 }
 ```
 
-```json
+```jsonc
 {
   "update_config": {
     "description_uri": "https://test.page/vesting"
@@ -350,7 +359,7 @@ Run as an owner address.
 Register a linear vesting schedule for accounts.
 Linearly increasing vesting.
 
-```json
+```jsonc
 {
   "register_linear_vesting": {
     "start_time":  time,     // 시작 시간(초)
@@ -375,7 +384,7 @@ Linearly increasing vesting.
 }
 ```
 
-```json
+```jsonc
 {
   "register_linear_vesting": {
     "start_time": "1650016200",
@@ -396,7 +405,7 @@ Linearly increasing vesting.
 Register a periodic vesting schedule for accounts.
 Vesting that occurs every time interval.
 
-```json
+```jsonc
 {
   "register_periodic_vesting": {
     "start_time":    time,     // 시작 시간(초)
@@ -424,7 +433,7 @@ Vesting that occurs every time interval.
 }
 ```
 
-```json
+```jsonc
 {
   "register_periodic_vesting": {
     "start_time": "1649911800",  // 2022-04-14 04:50:00 UTC 부터
@@ -446,7 +455,7 @@ Vesting that occurs every time interval.
 Register a conditional vesting schedule for accounts.
 Vesting that occurs when the condition is satisfied.
 
-```json
+```jsonc
 {
   "register_conditional_vesting": {
     "start_time": time,  // 시작 시간(초)
@@ -483,7 +492,7 @@ There are 4 types of the condition
 - "yearly": Occurs every month.
 
 ### daily condition
-```json
+```jsonc
 {
   "register_conditional_vesting": {
     ...
@@ -497,7 +506,7 @@ There are 4 types of the condition
 }
 ```
 
-```json
+```jsonc
 {
   "register_conditional_vesting": {
     "start_time": "1640995200",  // 2022-01-01 00:00:00 UTC 부터
@@ -516,7 +525,7 @@ There are 4 types of the condition
 ```
 
 ### weekly condition
-```json
+```jsonc
 {
   "register_conditional_vesting": {
     ...
@@ -531,7 +540,7 @@ There are 4 types of the condition
 }
 ```
 
-```json
+```jsonc
 {
   "register_conditional_vesting": {
     "start_time": "1640995200",  // 2022-01-01 00:00:00 UTC 부터
@@ -551,7 +560,7 @@ There are 4 types of the condition
 ```
 
 ### monthly condition
-```json
+```jsonc
 {
   "register_conditional_vesting": {
     ...
@@ -566,7 +575,7 @@ There are 4 types of the condition
 }
 ```
 
-```json
+```jsonc
 {
   "register_conditional_vesting": {
     "start_time": "1640995200",  // 2022-01-01 00:00:00 UTC 부터
@@ -586,7 +595,7 @@ There are 4 types of the condition
 ```
 
 ### yearly condition
-```json
+```jsonc
 {
   "register_conditional_vesting": {
     ...
@@ -602,7 +611,7 @@ There are 4 types of the condition
 }
 ```
 
-```json
+```jsonc
 {
   "register_conditional_vesting": {
     "start_time": "1640995200",  // 2022-01-01 00:00:00 UTC 부터
@@ -671,7 +680,7 @@ Cancel the vesting schedule for accounts.
 
 You should run using the master address that is registered.
 
-```json
+```jsonc
 {
   "deregister_vesting_accounts": {
     "accounts": [  // 등록을 해제할 수익자 목록
@@ -685,7 +694,7 @@ You should run using the master address that is registered.
 }
 ```
 
-```json
+```jsonc
 {
   "deregister_vesting_accounts": {
     "accounts": [
@@ -702,7 +711,7 @@ Cancel all accounts in a vesting stage.
 
 You should run using the master address that is registered.
 
-```json
+```jsonc
 {
   "deregister_vesting_stage": {
     "stage": number  // 전체 등록을 해제할 스테이지 번호
@@ -710,7 +719,7 @@ You should run using the master address that is registered.
 }
 ```
 
-```json
+```jsonc
 {
   "deregister_vesting_stage": {
     "stage": 1
@@ -724,7 +733,7 @@ Update the vesting info.
 
 You should run using the owner address or the master address that is registered.
 
-```json
+```jsonc
 {
   "update_vesting_info": {
     "stage": number,  // 정보를 갱신할 스테이지 번호
@@ -739,7 +748,7 @@ You should run using the owner address or the master address that is registered.
 }
 ```
 
-```json
+```jsonc
 {
   "update_vesting_info": {
     "stage": 1,
@@ -757,7 +766,7 @@ You should run using the owner address or the master address that is registered.
 Do claim.
 You should run using the recipient account(address) that is registered.
 
-```json
+```jsonc
 {
   "claim": {
     "stages": [  // 클레임할 베스팅 스테이지 목록
@@ -768,7 +777,7 @@ You should run using the recipient account(address) that is registered.
 }
 ```
 
-```json
+```jsonc
 {
   "claim": {
     "stages": [ 1, 2 ]
@@ -780,13 +789,13 @@ You should run using the recipient account(address) that is registered.
 ## Query config
 
 Input:
-```json
+```jsonc
 {
   "config": {}
 }
 ```
 Output:
-```json
+```jsonc
 {
   "owner": "xpla1...c9v5",
   "name": "vesting test",
@@ -799,7 +808,7 @@ Output:
 Check the registered vesting schedule.
 
 Input:
-```json
+```jsonc
 {
   "vesting_account": {
     "address": address,     // 수익자 주소
@@ -808,7 +817,7 @@ Input:
 }
 ```
 Output:
-```json
+```jsonc
 {
   "address": address,  // 수익자 주소
   "vestings": [        // 베스팅 목록
@@ -845,7 +854,7 @@ There are 2 types of the pagination
 - "offset"
 - "stage"
 
-```json
+```jsonc
 {
   "vesting_account": {
     ...
@@ -858,7 +867,7 @@ There are 2 types of the pagination
   }
 }
 ```
-```json
+```jsonc
 {
   "vesting_account": {
     ...
@@ -873,7 +882,7 @@ There are 2 types of the pagination
 ```
 
 Input:
-```json
+```jsonc
 {
   "vesting_account": {
     "address": "xpla1...ylya"
@@ -881,7 +890,7 @@ Input:
 }
 ```
 Output:
-```json
+```jsonc
 {
   "address": "xpla1...ylya",
   "vestings": [
@@ -965,7 +974,7 @@ Output:
 Predicted of periodic vesting amounts.
 
 Input:
-```json
+```jsonc
 {
   "periodic_vesting_amount": {
     "start_time":    time,   // 시작 시간(초)
@@ -984,7 +993,7 @@ Input:
 }
 ```
 Output:
-```json
+```jsonc
 {
   "account_count": number,  // 수익자 수
   "vesting_count": number,  // 베스팅 발생 횟수
@@ -993,7 +1002,7 @@ Output:
 ```
 
 Input:
-```json
+```jsonc
 {
   "periodic_vesting_amount": {
     "start_time": "1649911800",  // 2022-04-14 04:50:00 UTC 부터
@@ -1007,7 +1016,7 @@ Input:
 }
 ```
 Output:
-```json
+```jsonc
 {
   "account_count": 2,      // 계정 2개
   "vesting_count": 5,      // 5회의 발생
@@ -1019,7 +1028,7 @@ Output:
 Predicted of conditional vesting amounts.
 
 Input:
-```json
+```jsonc
 {
   "conditional_vesting_amount": {
     "start_time":    time,   // 시작 시간(초)
@@ -1038,7 +1047,7 @@ Input:
 }
 ```
 Output:
-```json
+```jsonc
 {
   "account_count": number,  // 수익자 수
   "vesting_count": number,  // 베스팅 조건 발생 횟수
@@ -1047,7 +1056,7 @@ Output:
 ```
 
 Input:
-```json
+```jsonc
 {
   "conditional_vesting_amount": {
     "start_time": "1640995200",  // 2022-01-01 00:00:00 UTC 부터
@@ -1067,7 +1076,7 @@ Input:
 }
 ```
 Output:
-```json
+```jsonc
 {
   "account_count": 2,      // 계정 2개
   "vesting_count": 16,     // 16회의 발생
@@ -1078,13 +1087,13 @@ Output:
 ## Query latest_stage
 
 Input:
-```json
+```jsonc
 {
   "latest_stage": {}
 }
 ```
 Output:
-```json
+```jsonc
 {
   "latest_stage": 5
 }
@@ -1094,7 +1103,7 @@ Output:
 Status for vesting stages.
 
 Input:
-```json
+```jsonc
 {
   "vesting_stages": {
     "pagination": { ... },  //<- Optional, 페이지 나누는 방식
@@ -1102,7 +1111,7 @@ Input:
 }
 ```
 Output:
-```json
+```jsonc
 {
   "vestings": [
     {
@@ -1132,7 +1141,7 @@ Output:
 ```
 
 Input:
-```json
+```jsonc
 {
   "vesting_stages": {
     "pagination": {
@@ -1142,7 +1151,7 @@ Input:
 }
 ```
 Output:
-```json
+```jsonc
 {
   "vestings": [
     {
