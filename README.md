@@ -37,7 +37,7 @@ Amounts of a vesting.
 
 ```jsonc
 {
-  "token":     [`VestingToken`](#vestingtoken),  // 토큰 종류
+  "token":     ```[VestingToken](#vestingtoken)```,  // 토큰 종류
   "total":     amount,        // 총 베스팅 물량
   "vested":    amount,        // 현재까지 발생된 물량
   "claimed":   amount,        // 이미 받아간 물량
