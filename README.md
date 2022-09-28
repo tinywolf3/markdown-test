@@ -11,6 +11,7 @@ There are 2 types of the pagination
 - "offset"
 - "stage"
 
+![JSON](https://github.com/yurijserrano/Github-Profile-Readme-Logos/blob/master/others/json.svg)
 ```jsonc
 {
   "offset": {
@@ -27,7 +28,7 @@ There are 2 types of the pagination
   }
 }
 ```
-
+![JavaScript](https://github.com/yurijserrano/Github-Profile-Readme-Logos/blob/master/programming%20languages/javascript.svg)
 ```javascript
 const pagination = {
   offset: {
