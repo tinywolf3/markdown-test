@@ -28,7 +28,7 @@ There are 2 types of the pagination
   }
 }
 ```
-![JavaScript](https://github.com/yurijserrano/Github-Profile-Readme-Logos/blob/master/programming%20languages/javascript.svg)
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 ```javascript
 const pagination = {
   offset: {
