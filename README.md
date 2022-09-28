@@ -35,7 +35,7 @@ const token = {
 ## VestingAmounts
 Amounts of a vesting.
 
-```json
+```jsonc
 {
   "token":     [`VestingToken`](#vestingtoken),  // 토큰 종류
   "total":     amount,        // 총 베스팅 물량
