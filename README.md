@@ -14,6 +14,12 @@ There are 2 types of the pagination
 - "offset"
 - "stage"
 
+```react
+type GreetingsProps = {
+  name: string;
+};
+```
+
 ```jsonc
 {
   "offset": {
