@@ -14,7 +14,7 @@ There are 2 types of the pagination
 - "offset"
 - "stage"
 
-```react
+```typescript
 type GreetingsProps = {
   name: string;
 };
