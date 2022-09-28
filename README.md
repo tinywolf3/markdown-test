@@ -12,6 +12,7 @@ There are 2 types of the pagination
 - "stage"
 
 ![JSON](https://img.shields.io/badge/-JSON-666666?logo=json&logoColor=ffffff)
+<img align="left" src="https://img.shields.io/badge/-JSON-666666?logo=json&logoColor=ffffff">
 ```jsonc
 {
   "offset": {
