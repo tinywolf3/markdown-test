@@ -1,5 +1,6 @@
 ![JSON](https://img.shields.io/badge/-JSON-666666?logo=json&logoColor=ffffff)
 ![JavaScript](https://img.shields.io/badge/-JavaScript-666666?logo=javascript&logoColor=f7df1e)
+![TypeScript](https://img.shields.io/badge/-TypeScript-666666?logo=typescript&logoColor=f7df1e)
 
 # XPLA Vesting
 This contract is to provide vesting account features for the both cw20 and native tokens.
