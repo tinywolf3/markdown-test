@@ -7,12 +7,12 @@ There are 2 types of the pagination
 - "native"
 - "cw20"
 
-```json
+```JSON with Comments
 {
   "native": string,  // 네이티브 토큰의 denom
 }
 ```
-```json
+```JSON with Comments
 {
   "cw20": address,  // CW20 토큰의 컨트랙트 주소
 }
