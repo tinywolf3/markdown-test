@@ -11,8 +11,7 @@ There are 2 types of the pagination
 - "offset"
 - "stage"
 
-![](https://img.shields.io/badge/-JSON-666666?logo=json&logoColor=ffffff)
-```jsonc
+![](https://img.shields.io/badge/-JSON-666666?logo=json&logoColor=ffffff)```jsonc
 {
   "offset": {
     "start": number,  //<- Optional, 시작 위치
@@ -28,8 +27,7 @@ There are 2 types of the pagination
   }
 }
 ```
-![](https://img.shields.io/badge/-JavaScript-666666?logo=javascript&logoColor=f7df1e)
-```javascript
+![](https://img.shields.io/badge/-JavaScript-666666?logo=javascript&logoColor=f7df1e)```javascript
 const pagination = {
   offset: {
     start: 5,   //<- Optional, 5번째부터
