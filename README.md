@@ -165,7 +165,7 @@ t| :              :
     - $V = A_t$
   > $V$: vested amount, $C$: vesting occurrence count,  
   > $A_e$: each amount, $A_t$: total amount,  
-  > $T_s$: start time, $T_e$: end time, $I$: time intetval, $T_n$: current time
+  > $T_s$: start time, $T_e$: end time, $I$: time interval, $T_n$: current time
 
 ```typescript
 interface RegisterPeriodicVesting {
@@ -229,7 +229,7 @@ t| :      :  :    :
     - $V = A_t$
   > $V$: vested amount, $C$: vesting occurrence count, $C_a$: number of all matched that occurred during the period,  
   > $A_e$: each amount, $A_t$: total amount,  
-  > $T_s$: start time, $T_e$: end time, $I$: time intetval, $T_n$: current time
+  > $T_s$: start time, $T_e$: end time, $T_n$: current time
 
 ```typescript
 interface RegisterConditionalVesting {
