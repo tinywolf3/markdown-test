@@ -157,7 +157,7 @@ t| :              :
   - if has each_amount
     - $V = A_e \times C$
   - if has total_amount
-    - $V = A_t \times {I \div (T_e - T_s)} \times C$
+    - $V = A_t \div (T_e - T_s) \times I \times C$
 - if $T_n \geqq T_e$
   - if has each_amount
     - $V = A_e \times (1 + {\lfloor {(T_e - T_s) \div I} \rfloor})$
