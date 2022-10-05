@@ -321,23 +321,13 @@ interface exec {
 ## Execute register_onetime_vesting
 Register a one-time vesting schedule for accounts.
 Vesting that occurs just one time.
-```vega-lite
-{
-  "data": {
-    "values": [
-      { "time": "start", "vesting": 1 },
-      { "time": "", "vesting": 1 },
-      { "time": "", "vesting": 1 },
-      { "time": "", "vesting": 1 },
-      { "time": "", "vesting": 1 },
-      { "time": "", "vesting": 1 },
-      { "time": "", "vesting": 1 },
-      { "time": "", "vesting": 1 },
-      { "time": "", "vesting": 1 },
-      { "time": "", "vesting": 1 },
-    ]
-  }
-}
+```
+v|
+e|
+s|
+t| ############
+  -+-----------
+  start
 ```
 
 ```typescript
@@ -373,14 +363,14 @@ ref: [AccountAmount](#accountamount), [VestingInfo](#vestinginfo)
 ## Execute register_linear_vesting
 Register a linear vesting schedule for accounts.
 Linearly increasing vesting.
-<code>
-v┃　　　　 ╱
-e┃　　　╱　　
-s┃　 ╱ 　　　
-t┃╱　　　　　
- ┗┯━━━━┯
- 　start　　end
-</code>
+```
+v|        /
+e|      /
+s|    /
+t|  /
+  -+-------+-
+  start   end
+```
 
 ```typescript
 interface RegisterLinearVesting extends RegisterOnetimeVesting {
@@ -412,13 +402,13 @@ ref: [RegisterOnetimeVesting](#execute-register_onetime_vesting)
 Register a periodic vesting schedule for accounts.
 Vesting that occurs every time interval.
 ```
-interval = □□□
-v┃　　　　　　　　　■
-e┃　　　　　　■■■■
-s┃　　　■■■■■■■
-t┃■■■■■■■■■■
- ┗┯━━━━━━━━┯
- 　start　　　　　　end
+interval = OOO
+v|          ##
+e|       #####
+s|    ########
+t| ###########
+  -+--------+-
+  start    end
 ```
 
 ```typescript
