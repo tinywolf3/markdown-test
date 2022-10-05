@@ -322,12 +322,12 @@ interface exec {
 Register a one-time vesting schedule for accounts.
 Vesting that occurs just one time.
 ```
-v┃
-e┃
-s┃
+v┃　　　　　　
+e┃　　　　　　
+s┃　　　　　　
 t┃■■■■■■
  ┗┯━━━━━
-   start
+ 　start
 ```
 
 ```typescript
@@ -364,12 +364,12 @@ ref: [AccountAmount](#accountamount), [VestingInfo](#vestinginfo)
 Register a linear vesting schedule for accounts.
 Linearly increasing vesting.
 ```
-v┃         ╱
-e┃      ╱
-s┃   ╱
-t┃╱
+v┃　　　　 ╱
+e┃　　　╱　　
+s┃　 ╱ 　　　
+t┃╱　　　　　
  ┗┯━━━━┯
-   start    end
+ 　start　　end
 ```
 
 ```typescript
@@ -380,7 +380,7 @@ interface exec {
   register_linear_vesting: RegisterLinearVesting,
 }
 ```
-ref: [RegisterOnetimeVesting](#executeregister_onetime_vesting)
+ref: [RegisterOnetimeVesting](#execute-register_onetime_vesting)
 ```jsonc
 {
   "register_linear_vesting": {
@@ -403,12 +403,12 @@ Register a periodic vesting schedule for accounts.
 Vesting that occurs every time interval.
 ```
 interval = □□□
-v┃                  ■
-e┃            ■■■■
-s┃      ■■■■■■■
+v┃　　　　　　　　　■
+e┃　　　　　　■■■■
+s┃　　　■■■■■■■
 t┃■■■■■■■■■■
  ┗┯━━━━━━━━┯
-   start            end
+ 　start　　　　　　end
 ```
 
 ```typescript
