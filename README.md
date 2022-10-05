@@ -321,14 +321,14 @@ interface exec {
 ## Execute register_onetime_vesting
 Register a one-time vesting schedule for accounts.
 Vesting that occurs just one time.
-<tt>
+<code>
 v┃　　　　　　
 e┃　　　　　　
 s┃　　　　　　
 t┃■■■■■■
  ┗┯━━━━━
  　start
-</tt>
+</code>
 
 ```typescript
 interface RegisterOnetimeVesting {
@@ -363,14 +363,14 @@ ref: [AccountAmount](#accountamount), [VestingInfo](#vestinginfo)
 ## Execute register_linear_vesting
 Register a linear vesting schedule for accounts.
 Linearly increasing vesting.
-<tt>
+<code>
 v┃　　　　 ╱
 e┃　　　╱　　
 s┃　 ╱ 　　　
 t┃╱　　　　　
  ┗┯━━━━┯
  　start　　end
-</tt>
+</code>
 
 ```typescript
 interface RegisterLinearVesting extends RegisterOnetimeVesting {
