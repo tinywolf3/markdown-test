@@ -321,12 +321,24 @@ interface exec {
 ## Execute register_onetime_vesting
 Register a one-time vesting schedule for accounts.
 Vesting that occurs just one time.
-    v┃
-    e┃
-    s┃
-    t┃■■■■■■
-     ┗┯━━━━━
-       start
+```vega-lite
+{
+  "data": {
+    "values": [
+      { "time": "start", "vesting": 1 },
+      { "time": "", "vesting": 1 },
+      { "time": "", "vesting": 1 },
+      { "time": "", "vesting": 1 },
+      { "time": "", "vesting": 1 },
+      { "time": "", "vesting": 1 },
+      { "time": "", "vesting": 1 },
+      { "time": "", "vesting": 1 },
+      { "time": "", "vesting": 1 },
+      { "time": "", "vesting": 1 },
+    ]
+  }
+}
+```
 
 ```typescript
 interface RegisterOnetimeVesting {
