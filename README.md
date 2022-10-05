@@ -321,14 +321,12 @@ interface exec {
 ## Execute register_onetime_vesting
 Register a one-time vesting schedule for accounts.
 Vesting that occurs just one time.
-<code>
-v┃　　　　　　
-e┃　　　　　　
-s┃　　　　　　
-t┃■■■■■■
- ┗┯━━━━━
- 　start
-</code>
+    v┃
+    e┃
+    s┃
+    t┃■■■■■■
+     ┗┯━━━━━
+       start
 
 ```typescript
 interface RegisterOnetimeVesting {
