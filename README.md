@@ -104,7 +104,7 @@ t|  /      :
   start   end
 ```
 - if $T_n \geqq T_s$ and $T_n < T_e$
-  - $V = A_t \times {{T_n - T_s} \over {T_e - T_s}}$
+  - $V = A_t \times {{T_n - T_s} \div {T_e - T_s}}$
 - if $T_n \geqq T_e$
   - $V = A_t$
   > $V$: vested amount, $A_t$: total amount,  
@@ -153,14 +153,14 @@ t| :              :
   start          end
 ```
 - if $T_n \geqq T_s$ and $T_n < T_e$
-  - $C = 1 + {\lfloor {{T_n-T_s} \over I} \rfloor}$
+  - $C = 1 + {\lfloor {{T_n-T_s} \div I} \rfloor}$
   - if has each_amount
     - $V = A_e \times C$
   - if has total_amount
-    - $V = A_t \times {I \over {T_e-T_s}} \times C$
+    - $V = A_t \times {I \div {T_e-T_s}} \times C$
 - if $T_n \geqq T_e$
   - if has each_amount
-    - $V = A_e \times (1 + {\lfloor {{T_e-T_s} \over I} \rfloor})$
+    - $V = A_e \times (1 + {\lfloor {{T_e-T_s} \div I} \rfloor})$
   - if has total_amount
     - $V = A_t$
   > $V$: vested amount, $C$: vesting occurrence count,  
@@ -220,7 +220,7 @@ t| :      :  :    :
     - $V = A_e \times C$ 
       - *like a periodic*
   - if has total_amount
-    - $V = A_t \times {{T_n - T_s} \over {T_e - T_s}}$
+    - $V = A_t \times {{T_n - T_s} \div {T_e - T_s}}$
       - *like a linear*
 - if $T_n \geqq T_e$
   - if has each_amount
@@ -500,7 +500,7 @@ interface QueryVestingAccount {
 ```
 Output:
 ```typescript
-interface VestingResponse extends VestingStatus {
+interface VestingResponse {
   stage:    number,           // 스테이지 번호
   master:   address,          // 관리자 주소
   schedule: VestingSchedule,  // 베스팅 일정
