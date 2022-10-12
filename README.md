@@ -52,9 +52,11 @@ Vesting that occurs just one time.
 ```
 v|
 e|
-s| ____________
-t| :
-  -+-----------
+s|
+t|
+e|  ________________
+d|  :
+  --+---------------
   start
 ```
 - if $T_n \geqq T_s$
@@ -65,28 +67,27 @@ t| :
 ```typescript
 interface RegisterOnetimeVesting {
   register_onetime_vesting: {  // 1회성 베스팅 스케쥴
-    start_time: time,                  // 시작 시간(초)
-    master?:    address,               //<- Optional, 관리자 주소 (베스팅 스케쥴 취소 가능)
-                                       //   (따로 지정하지 않으면 register를 실행하는 계정 주소로 default)
-    accounts:   AccountTotalAmount[],  // 수익자 목록 (total_amount만 등록 가능)
-    info:       VestingInfo,           // 베스팅 상세 정보
+    token:       VestingToken,          // 베스팅 토큰 종류
+    start_time:  time,                  // 시작 시간(초)
+    accounts:    AccountTotalAmount[],  // 수익자 목록 (total_amount만 등록 가능)
+    master?:     address,               //<- Optional, 관리자 주소 (베스팅 스케쥴 취소 가능)
+                                        //   (따로 지정하지 않으면 register를 실행하는 계정 주소로 default)
+    withdrawer?: address,               //<- Optional, 남은 물량을 회수할 계정
+                                        //   (따로 지정하지 않으면 register를 실행하는 계정 주소로 default)
+    info?:       VestingInfo,           //<- Optional, 베스팅 상세 정보
   },
 }
 ```
-> [AccountTotalAmount](#accountamount), [VestingInfo](#vestinginfo)
+> [AccountTotalAmount](#accountamount), [VestingInfo](#vestinginfo), [VestingToken](#vestingtoken)
 ```jsonc
 {
   "register_onetime_vesting": {
+    "token": { "native": { "denom": "axpla" } },
     "start_time": "1650016200",
-    "end_time": "1650016200",
     "accounts": [
       { "address": "xpla1...ylya", "total_amount": "1000" },
       { "address": "xpla1...80ae", "total_amount": "1500" }
-    ],
-    "info": {
-      "name": "Just Vesting",
-      "description": "test"
-    }
+    ]
   }
 }
 ```
@@ -95,13 +96,14 @@ interface RegisterOnetimeVesting {
 Register a linear vesting schedule for accounts.
 Linearly increasing vesting.
 ```
- |         __
-v|        /:
-e|      /  :
-s|    /    :
-t|  /      :
-  -+-------+-
-  start   end
+v|            ___
+e|           /:
+s|         /  :
+t|       /    :
+e|     /      :
+d|   /        :
+  --+---------+--
+  start      end
 ```
 - if $T_n \geqq T_s$ and $T_n < T_e$
   - $V = A_t \times {(T_n - T_s) \div (T_e - T_s)}$
@@ -113,18 +115,21 @@ t|  /      :
 ```typescript
 interface RegisterLinearVesting {
   register_linear_vesting: {  // 선형 베스팅 스케쥴
-    start_time: time,                  // 시작 시간(초)
-    end_time:   time,                  // 끝 시간(초)
-    master?:    address,
-    accounts:   AccountTotalAmount[],  // 수익자 목록 (total_amount만 등록 가능)
-    info:       VestingInfo,
+    token:       VestingToken,
+    start_time:  time,                  // 시작 시간(초)
+    end_time:    time,                  // 끝 시간(초)
+    accounts:    AccountTotalAmount[],  // 수익자 목록 (total_amount만 등록 가능)
+    master?:     address,
+    withdrawer?: address,
+    info?:       VestingInfo,
   },
 }
 ```
-> [AccountTotalAmount](#accountamount), [VestingInfo](#vestinginfo)
+> [AccountTotalAmount](#accountamount), [VestingInfo](#vestinginfo), [VestingToken](#vestingtoken)
 ```jsonc
 {
   "register_linear_vesting": {
+    "token": { "native": { "denom": "axpla" } },
     "start_time": "1650016200",
     "end_time": "1650016500",
     "accounts": [
@@ -144,12 +149,13 @@ Register a periodic vesting schedule for accounts.
 Vesting that occurs every time interval.
 ```
 interval = *****
- |                __
-v|           _____:
-e|      _____     :
-s| _____          :
-t| :              :
-  -+--------------+-
+v|
+e|                 ___
+s|            _____:
+t|       _____     :
+e|  _____          :
+d|  :              :
+  --+--------------+--
   start          end
 ```
 - if $T_n \geqq T_s$ and $T_n < T_e$
@@ -170,19 +176,22 @@ t| :              :
 ```typescript
 interface RegisterPeriodicVesting {
   register_periodic_vesting: {  // 일정 간격 베스팅 스케쥴
+    token:         VestingToken,
     start_time:    time,
     end_time:      time,
     time_interval: time,             // 시간 간격(초)
-    master?:       address,
     accounts:      AccountAmount[],  // 수익자 목록 (each_amount나 total_amount 중 하나로 등록 가능)
-    info:          VestingInfo,
+    master?:       address,
+    withdrawer?:   address,
+    info?:         VestingInfo,
   },
 }
 ```
-> [AccountAmount](#accountamount), [VestingInfo](#vestinginfo)
+> [AccountAmount](#accountamount), [VestingInfo](#vestinginfo), [VestingToken](#vestingtoken)
 ```jsonc
 {
   "register_periodic_vesting": {
+    "token": { "native": { "denom": "axpla" } },
     "start_time": "1649911800",  // 2022-04-14 04:50:00 UTC 부터
     "end_time": "1649912100",    // 2022-04-14 04:55:00 UTC 까지
     "time_interval": "60",       // 1분마다
@@ -206,44 +215,45 @@ Register a conditional vesting schedule for accounts.
 Vesting that occurs when the condition is matched.
 ```
 condition = 📅⏰
- |                __
-v|           _____:
-e|        ___:    :
-s| _______:  :    :
-t| :      :  :    :
-  -+------+--+----+-
-  start   c  c   end
+v|
+e|                 ___
+s|            _____:
+t|         ___:    :
+e|  _______:  :    :
+d|  :      :  :    :
+  --+------+--+----+--
+  start    c  c   end
 ```
 - if $T_n \geqq T_s$ and $T_n < T_e$
+  - $C_t = ($ number of condition matched at the block time $)$
   - if has each_amount
-    - $C = ($ number of condition matched $)$
-    - $V = A_e \times C$ 
-      - *like a periodic*
+    - $V = A_e \times C_t$ 
   - if has total_amount
-    - $V = A_t \times {(T_n - T_s) \div (T_e - T_s)}$
-      - *like a linear*
+    - $V = A_t \times C_t \div C_a$
 - if $T_n \geqq T_e$
   - if has each_amount
     - $V = A_e \times C_a$
   - if has total_amount
     - $V = A_t$
-  > $V$: vested amount, $C$: vesting occurrence count, $C_a$: number of all matched that occurred during the period,  
+  > $V$: vested amount, $C_t$: vesting occurrence count, $C_a$: number of all matched that occurred during the period,  
   > $A_e$: each amount, $A_t$: total amount,  
   > $T_s$: start time, $T_e$: end time, $T_n$: current time
 
 ```typescript
 interface RegisterConditionalVesting {
   register_conditional_vesting: {  // 특정 조건 베스팅 스케쥴
-    start_time:    time,
-    end_time:      time,
-    condition:     VestingCondition,  // 조건 내용
-    master?:       address,
-    accounts:      AccountAmount[],   // 수익자 목록 (each_amount나 total_amount 중 하나로 등록 가능)
-    info:          VestingInfo,
+    token:       VestingToken,
+    start_time:  time,
+    end_time:    time,
+    condition:   VestingCondition,  // 조건 내용
+    accounts:    AccountAmount[],   // 수익자 목록 (each_amount나 total_amount 중 하나로 등록 가능)
+    master?:     address,
+    withdrawer?: address,
+    info?:       VestingInfo,
   },
 }
 ```
-> [VestingCondition](#vestingcondition), [AccountAmount](#accountamount), [VestingInfo](#vestinginfo)
+> [VestingCondition](#vestingcondition), [AccountAmount](#accountamount), [VestingInfo](#vestinginfo), [VestingToken](#vestingtoken)
 
 There are 4 types of the condition
 - "daily": Occurs at a certain time every day.
@@ -255,6 +265,7 @@ There are 4 types of the condition
 ```jsonc
 {
   "register_conditional_vesting": {
+    "token": { "native": { "denom": "axpla" } },
     "start_time": "1640995200",  // 2022-01-01 00:00:00 UTC 부터
     "end_time": "1767225599",    // 2025-12-31 23:59:59 UTC 까지
     "condition": {
@@ -274,6 +285,7 @@ There are 4 types of the condition
 ```jsonc
 {
   "register_conditional_vesting": {
+    "token": { "native": { "denom": "axpla" } },
     "start_time": "1640995200",  // 2022-01-01 00:00:00 UTC 부터
     "end_time": "1767225599",    // 2025-12-31 23:59:59 UTC 까지
     "condition": {
@@ -294,6 +306,7 @@ There are 4 types of the condition
 ```jsonc
 {
   "register_conditional_vesting": {
+    "token": { "native": { "denom": "axpla" } },
     "start_time": "1640995200",  // 2022-01-01 00:00:00 UTC 부터
     "end_time": "1767225599",    // 2025-12-31 23:59:59 UTC 까지
     "condition": {
@@ -314,6 +327,7 @@ There are 4 types of the condition
 ```jsonc
 {
   "register_conditional_vesting": {
+    "token": { "native": { "denom": "axpla" } },
     "start_time": "1640995200",  // 2022-01-01 00:00:00 UTC 부터
     "end_time": "1767225599",    // 2025-12-31 23:59:59 UTC 까지
     "condition": {
@@ -331,49 +345,6 @@ There are 4 types of the condition
 }
 ```
 
-## Vesting for CW20 tokens
-When registering the schedule, you must send all the tokens to be vast.
-Vesting is performed with the Denom of the token transmitted.
-
-In order to register as a CW20 token, an account with a token
-You must send the Vesting Registration Message by sending the quantity to the vesting contract.
-```javascript
-  const vesting_msg = {  // 베스팅 등록 메시지
-    register_linear_vesting: {
-      start_time: '' + ((new Date('2022-04-15T05:00:00.000Z')).getTime() / 1000),
-      end_time: '' + ((new Date('2022-04-15T05:10:00.000Z')).getTime() / 1000),
-      accounts: [
-        { address: 'xpla1...ylya', total_amount: '1000' },
-        { address: 'xpla1...80ae', total_amount: '1500' }
-      ],
-      info: {
-        name: 'Gamer\'s Vesting',
-        description: 'vesting test 1'
-      }
-    }
-  };
-
-  const execute = new MsgExecuteContract(
-    'xpla1...c08z',  // 물량을 보내는 계정
-    'xpla1...f49y',  // cw20 토큰 컨트랙트
-    {
-      send: {
-        amount: '2500',            // 총 베스팅 물량을 담아서
-                                   // (vesting_amount 쿼리의 결과와 일치해야함)
-        contract: 'xpla1...qgaw',  // 베스팅 컨트랙트 주소
-        msg: Buffer.from(JSON.stringify(vesting_msg), 'utf8').toString('base64'),
-                                   // 베스팅 메시지를 base64로 인코딩
-      }
-    }
-  );
-  
-  const send_tx = await wallet.createAndSignTx({
-    msgs: [execute],
-    gasPrices: { axpla: 850000000000 },
-  });
-  const txres = await lcd.tx.broadcastSync(send_tx);
-```
-
 
 ## Execute deregister_vesting_accounts
 Cancel the vesting schedule for accounts.
@@ -383,7 +354,7 @@ You should run using the master address that is registered.
 ```typescript
 interface DeregisterVestingAccounts {
   deregister_vesting_accounts: {
-    accounts: AccountStage[],  // 등록을 해제할 수익자 목록
+    accounts:    AccountStage[],  // 등록을 해제할 수익자 목록
   },
 }
 ```
@@ -408,7 +379,7 @@ You should run using the master address that is registered.
 ```typescript
 interface DeregisterVestingStage {
   deregister_vesting_stage: {
-    stage: number,  // 전체 등록을 해제할 스테이지 번호
+    stage:       number,   // 전체 등록을 해제할 스테이지 번호
   },
 }
 ```
@@ -456,7 +427,9 @@ You should run using the recipient account(address) that is registered.
 ```typescript
 interface Claim {
   claim: {
-    stages: number[],  // 클레임할 베스팅 스테이지 목록
+    stages:     number[],  // 클레임할 베스팅 스테이지 목록
+    recipient?: address,   //<- Optional, 클레임할 물량을 받을 계정
+                           //   (지정하지 않으면 등록된 수익자에게 전송)
   },
 }
 ```
@@ -533,6 +506,7 @@ Output:
       "master": "xpla1...0r7f",
       "schedule": {
         "style": "linear",
+        "token": { "native": { "denom": "axpla" } },
         "start_time": "1650379800",
         "end_time": "1650379800",
         "time_interval": null,
@@ -549,7 +523,6 @@ Output:
         "webpage": null
       },
       "amounts": {
-        "token": { "native": "axpla" },
         "total": "1000000",
         "vested": "200000",
         "claimed": "150000",
@@ -561,6 +534,7 @@ Output:
       "master": "xpla1...0r7f",
       "schedule": {
         "style": "periodic",
+        "token": { "native": { "denom": "axpla" } },
         "start_time": "1650015000",
         "end_time": "1650015300",
         "time_interval": "60",
@@ -577,7 +551,6 @@ Output:
         "webpage": null,
       },
       "amounts": {
-        "token": { "cw20": "xpla1...92f4" },
         "total": "1500000",
         "vested": "1000",
         "claimed": "0",
@@ -589,6 +562,7 @@ Output:
       "master": "xpla1...0r7f",
       "schedule": {
         "style": "daily_condition",
+        "token": { "native": { "denom": "axpla" } },
         "start_time": "1650343500",
         "end_time": "1650553200",
         "time_interval": null,
@@ -605,7 +579,6 @@ Output:
         "webpage": null,
       },
       "amounts": {
-        "token": { "native": "axpla" },
         "total": "3000000",
         "vested": "800000",
         "claimed": "120000",
@@ -634,8 +607,8 @@ Output:
 ```typescript
 interface VestingAmountResponse {
   account_count: number,  // 수익자 수
-  vesting_count: number,  // 베스팅 발생 횟수
-  sum_amount:    amount,  // 모든 베스팅 물량의 총합
+  vested_count:  number,  // 베스팅 발생 횟수
+  sum_amounts:   amount,  // 모든 베스팅 물량의 총합
 }
 ```
 > [AccountAmount](#accountamount)
@@ -658,8 +631,8 @@ Output:
 ```jsonc
 {
   "account_count": 2,    // 계정 2개
-  "vesting_count": 5,    // 5회의 발생
-  "sum_amount": "21000"  // each(1000*5) + total(15000)
+  "vested_count": 6,     // 6회의 발생 [ 0분(시작), 1분, 2분, 3분, 4분, 5분(끝) ]
+  "sum_amounts": "21000"  // each(1000*5) + total(15000)
 }
 ```
 
@@ -681,8 +654,8 @@ Output:
 ```typescript
 interface VestingAmountResponse {
   account_count: number,  // 수익자 수
-  vesting_count: number,  // 베스팅 발생 횟수
-  sum_amount:    amount,  // 모든 베스팅 물량의 총합
+  vested_count:  number,  // 베스팅 발생 횟수
+  sum_amounts:   amount,  // 모든 베스팅 물량의 총합
 }
 ```
 > [VestingCondition](#vestingcondition), [AccountAmount](#accountamount)
@@ -710,9 +683,9 @@ Input:
 Output:
 ```jsonc
 {
-  "account_count": 2,      // 계정 2개
-  "vesting_count": 16,     // 16회의 발생
-  "total_amount": "31000"  // each(1000*16) + total(15000)
+  "account_count": 2,    // 계정 2개
+  "vested_count": 16,    // 16회의 발생 [ 22년1월20일0시, 22년4월20일0시, 22년7월20일0시, ... 25년10월20일0시 ]
+  "sum_amounts": "31000"  // each(1000*16) + total(15000)
 }
 ```
 
@@ -745,11 +718,12 @@ interface QueryVestingStages {
 Output:
 ```typescript
 interface StageResponse {
-  stage:    number,           // 스테이지 번호
-  master:   address,          // 관리자 주소
-  schedule: VestingSchedule,  // 베스팅 일정
-  info:     VestingInfo,      // 베스팅 내용 정보
-  status:   VestingStatus,    // 베스팅 상태 정보
+  stage:      number,           // 스테이지 번호
+  master:     address,          // 관리자 주소
+  withdrawer: address,          // 회수자 주소
+  schedule:   VestingSchedule,  // 베스팅 일정
+  info:       VestingInfo,      // 베스팅 내용 정보
+  status:     VestingStatus,    // 베스팅 상태 정보
 }
 interface VestingStagesResponse {
   stages: StageResponse[],  // 스테이지 정보 목록
@@ -773,8 +747,10 @@ Output:
     {
       "stage": 2,
       "master": "xpla1...0r7f",
+      "withdrawer": "xpla1...0r7f",
       "schedule": {
         "style": "periodic",
+        "token": { "native": { "denom": "axpla" } },
         "start_time": "1649911800",
         "end_time": "1649912100",
         "time_interval": "60",
@@ -793,7 +769,7 @@ Output:
       "status": {
         "opened": true,
         "token": { "native": "axpla" },
-        "sum_amount": "21000000000000",
+        "sum_amounts": "21000000000000",
         "sum_claimed": "200000000000"
       }
     }
@@ -901,17 +877,21 @@ interface AccountStage {
 ## VestingToken
 Token type of vesting.
 
-There are 2 types of the pagination
+There are 2 types of the token.
 - "native"
 - "cw20"
 
 ```typescript
 interface NativeToken {
-  native:  string,   // 네이티브 토큰의 denom
+  native: {
+    denom: string,  // 네이티브 토큰의 denom
+  },
   cw20?:   never,
 }
 interface CW20Token {
-  cw20:    address,  // CW20 토큰의 컨트랙트 주소
+  cw20: {
+    contract: address,  // CW20 토큰의 컨트랙트 주소
+  },
   native?: never,
 }
 type VestingToken = (
@@ -921,12 +901,12 @@ type VestingToken = (
 ```
 ```jsonc
 {
-  "native": "axpla"  // 네이티브 토큰
+  "native": { "denom": "axpla" }  // 네이티브 토큰
 }
 ```
 ```jsonc
 {
-  "cw20": "xpla1...wpmw"  // CW20 토큰
+  "cw20": { "contract": "xpla1...wpmw" }  // CW20 토큰
 }
 ```
 
@@ -938,6 +918,7 @@ interface VestingSchedule {
   style:          string,        // 베스팅 스케쥴 형태
                                  //   (onetime, linear, periodic, daily_condition, weekly_condition,
                                  //    monthly_condition, yearly_condition)
+  token:          VestingToken,  // 베스팅 토큰 종류
   start_time:     time,          // 시작 시간(초)
   end_time:       time,          // 끝 시간(초)
   time_interval?: time,          //<- Optional, 시간 간격(초) (periodic의 경우에만)
@@ -947,9 +928,11 @@ interface VestingSchedule {
   hour?:          number[],      //<- Optional, 발생 시간 (conditional의 경우에만)
 }
 ```
+> [VestingToken](#vestingtoken)
 ```jsonc
 {
   "style": "periodic",         // 일정 시간 간격의 스케쥴
+  "token": { "native": { "denom": "axpla" } },
   "start_time": "1649998800",  // 2022-04-15T05:00:00Z UTC에 시작
   "end_time": "1649999100",    // 2022-04-15T05:05:00Z UTC에 끝
   "time_interval": "60",       // 1분마다
@@ -981,18 +964,19 @@ Status of a vesting.
 
 ```typescript
 interface VestingStatus {
-  opened:      bool,          // 베스팅이 시작되었는지 여부
+  started:     bool,          // 베스팅이 시작되었는지 여부
   token:       VestingToken,  // 토큰 종류
-  sum_amount:  amount,        // 스테이지 전체 베스팅 물량
+  sum_amounts: amount,        // 스테이지 전체 베스팅 물량
   sum_claimed: amount,        // 이 스테이지에서 현재까지 클레임된 물량 합계
 }
 ```
 > [VestingToken](#vestingtoken)
 ```jsonc
 {
-  "token": { "native": "axpla" },        // axpla 네이티브 토큰
-  "sum_amount": "21000000000000000000",  // 스테이지 전체 21xpla 베스팅 예정
-  "sum_claimed": "2000000000000000000"   // 본 스테이지에서 현재까지 클레임된 총 물량은 2xpla
+  "started": false,                       // 아직 시작 안 됨
+  "token": { "native": "axpla" },         // axpla 네이티브 토큰
+  "sum_amounts": "21000000000000000000",  // 스테이지 전체 21xpla 베스팅 예정
+  "sum_claimed": "2000000000000000000"    // 본 스테이지에서 현재까지 클레임된 총 물량은 2xpla
 }
 ```
 
@@ -1030,37 +1014,37 @@ There are 4 types of the condition
 
 ```typescript
 interface DailyCondition {
-  hour: number[],  // 발생 시간 목록 (0~23)
+  hour:    number[],  // 발생 시간 목록 (0~23)
 }
 interface WeeklyCondition extends DailyCondition {
   weekday: number[],  // 발생 요일 (0:Sun ~ 6:Sat)
 }
 interface MonthlyCondition extends DailyCondition {
-  day: number[],  // 발생 일자 (1 ~ 31)
+  day:     number[],  // 발생 일자 (1 ~ 31)
 }
 interface YearlyCondition extends MonthlyCondition {
-  month: number[],  // 발생 월 (1 ~ 12)
+  month:   number[],  // 발생 월 (1 ~ 12)
 }
 type VestingCondition = (
   {
-    daily:   DailyCondition,    // 매일 발생하는 조건
-    weekly?: never,
+    daily:    DailyCondition,    // 매일 발생하는 조건
+    weekly?:  never,
     monthly?: never,
-    yearly?: never,
+    yearly?:  never,
   } | {
-    weekly:  WeeklyCondition,   // 매주 발생하는 조건
-    daily?: never,
+    weekly:   WeeklyCondition,   // 매주 발생하는 조건
+    daily?:   never,
     monthly?: never,
-    yearly?: never,
+    yearly?:  never,
   } | {
-    monthly: MonthlyCondition,  // 매달 발생하는 조건
-    daily?: never,
-    weekly?: never,
-    yearly?: never,
+    monthly:  MonthlyCondition,  // 매달 발생하는 조건
+    daily?:   never,
+    weekly?:  never,
+    yearly?:  never,
   } | {
-    yearly:  YearlyCondition,   // 매년 발생하는 조건
-    daily?: never,
-    weekly?: never,
+    yearly:   YearlyCondition,   // 매년 발생하는 조건
+    daily?:   never,
+    weekly?:  never,
     monthly?: never,
   }
 )  // 반드시 한가지 컨디션만 설정
@@ -1072,7 +1056,9 @@ Vesting occurs at a certain time every day.
 ```jsonc
 // 매일 1시와 13시에 베스팅 발생 (UTC 기준)
 {
-  "daily": { "hour": [ 1, 13 ] }
+  "daily": {
+    "hour": [ 1, 13 ]
+  }
 }
 ```
 
