@@ -207,8 +207,7 @@ interface RegisterPeriodicVesting {
 }
 ```
 
-each_amount로 등록한 계정은 베스팅이 발생할 때마다 정해진 물량이 추가됩니다.
-
+each_amount로 등록한 계정은 베스팅이 발생할 때마다 정해진 물량이 추가됩니다.  
 total_amount로 등록한 계정은 베스팅 총 기간 중 조건이 발생한 횟수만큼을 나눠서 물량이 결정됩니다.
 
 ## Execute register_conditional_vesting
